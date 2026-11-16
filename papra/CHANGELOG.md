@@ -6,6 +6,11 @@ Ein CI-Check prüft, dass die aktuelle Version genau einen ausgefüllten Eintrag
 
 ## [Unreleased]
 
+## [26.7.1] - 2026-11-16
+
+### Änderungen
+- chore(deps): update ghcr.io/papra-hq/papra docker tag to v26.7.1 ([7555e06](https://github.com/chWagnr/hassio-addons/commit/7555e062fe9cbec9a65570071c88920abfe1ea26))
+
 ## [26.7.0] - 2026-10-07
 
 ### Änderungen
