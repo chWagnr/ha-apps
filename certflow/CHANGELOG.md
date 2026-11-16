@@ -6,6 +6,11 @@ Ein CI-Check prüft, dass die aktuelle Version genau einen ausgefüllten Eintrag
 
 ## [Unreleased]
 
+## [0.1.9] - 2026-11-16
+
+### Änderungen
+- chore(deps): update dependency certbot to v5.10.0 ([bbff822](https://github.com/chWagnr/hassio-addons/commit/bbff82208477b1f4378315ee6a3ae9543e2a8383))
+
 ## [0.1.8] - 2026-09-07
 
 ### Änderungen
