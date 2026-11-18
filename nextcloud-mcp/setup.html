@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nextcloud MCP</title>
+<style>body{font:16px system-ui;max-width:38rem;margin:2rem auto;padding:1rem;color:#202020;background:#fafafa}label,input,button{display:block}input,button{font:inherit;padding:.6rem;margin:.4rem 0 1rem;box-sizing:border-box;width:100%}button{cursor:pointer}#status,#feedback{white-space:pre-wrap;padding:.8rem;background:#e8eef5}[hidden]{display:none!important}</style>
+<h1>Nextcloud MCP</h1><p id="status" role="status">Loading…</p>
+<p>Powered by nc_mcp_server, including Cospend and other Nextcloud apps. Enter your Nextcloud base URL, username and a dedicated app password from Settings → Security.</p>
+<form><label>Nextcloud URL<input name="nextcloud_url" type="url" placeholder="https://cloud.example.com" required maxlength="4096"></label><label>Username<input name="nextcloud_user" autocomplete="username" required maxlength="4096"></label><label>App password<input name="nextcloud_password" type="password" autocomplete="new-password" required maxlength="4096"></label><button disabled>Test and save</button></form>
+<p id="feedback" role="status" hidden></p>
+<p>The test reads your user profile. Credentials are saved in private add-on options. Restart the app after saving. Change permissions and allowed origins in the add-on configuration.</p>
+<h2>MCP access</h2><p>Endpoint: <code>http://HOME_ASSISTANT:3738/mcp</code>. Use HTTPS through a reverse proxy for external access. Authenticate with <code>Authorization: Bearer TOKEN</code>.</p>
+<button id="reveal" type="button" disabled>Show MCP token</button><input id="token" type="password" readonly autocomplete="off" aria-label="MCP access token" hidden>
+<script src="setup.js"></script></html>

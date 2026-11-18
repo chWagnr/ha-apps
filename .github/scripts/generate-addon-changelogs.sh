@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-for addon in certflow papra tandoor-mcp; do
+for addon in certflow papra tandoor-mcp nextcloud-mcp; do
   config_file="${addon}/config.yaml"
   version="$(sed -n 's/^version: "\(.*\)"$/\1/p' "${config_file}")"
   if [ -z "${version}" ]; then
@@ -13,6 +13,7 @@ for addon in certflow papra tandoor-mcp; do
     certflow) display_name="CertFlow" ;;
     papra) display_name="Papra" ;;
     tandoor-mcp) display_name="Tandoor MCP" ;;
+    nextcloud-mcp) display_name="Nextcloud MCP" ;;
   esac
   changelog_file="${addon}/CHANGELOG.md"
   if grep -qE "^## \[${version//./\\.}\]([[:space:]]|$)" "${changelog_file}"; then

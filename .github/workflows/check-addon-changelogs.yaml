@@ -39,7 +39,7 @@ jobs:
           base = os.environ.get('BASE_SHA', '')
           check_all = os.environ['EVENT_NAME'] == 'workflow_dispatch' or not base or set(base) == {'0'}
           failed = False
-          for addon in ('certflow', 'papra', 'tandoor-mcp'):
+          for addon in ('certflow', 'papra', 'tandoor-mcp', 'nextcloud-mcp'):
               config = Path(addon, 'config.yaml')
               match = re.search(r'^version:\s*"([^"\n]+)"\s*$', config.read_text(), re.MULTILINE)
               if not match:

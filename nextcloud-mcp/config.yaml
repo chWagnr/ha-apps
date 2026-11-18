@@ -1,0 +1,38 @@
+name: Nextcloud MCP
+version: "0.1.0"
+slug: nextcloud_mcp
+description: Authenticated nc_mcp_server for Nextcloud apps, including Cospend.
+url: https://github.com/chWagnr/hassio-addons/tree/main/nextcloud-mcp
+image: ghcr.io/chwagnr/{arch}-addon-nextcloud-mcp
+arch:
+  - amd64
+  - aarch64
+startup: application
+boot: auto
+init: false
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:cloud
+hassio_api: true
+hassio_role: default
+timeout: 20
+ports:
+  3738/tcp: 3738
+ports_description:
+  3738/tcp: Streamable HTTP MCP endpoint (use HTTPS through a reverse proxy)
+watchdog: http://[HOST]:[PORT:3738]/healthz
+options:
+  nextcloud_url: ""
+  nextcloud_user: ""
+  nextcloud_password: ""
+  mcp_token: ""
+  permissions: read
+  allowed_origins: []
+schema:
+  nextcloud_url: str
+  nextcloud_user: str
+  nextcloud_password: password
+  mcp_token: password
+  permissions: list(read|write|destructive)
+  allowed_origins:
+    - str

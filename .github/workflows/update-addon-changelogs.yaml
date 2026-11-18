@@ -8,6 +8,7 @@ on:
       - "certflow/config.yaml"
       - "papra/config.yaml"
       - "tandoor-mcp/config.yaml"
+      - "nextcloud-mcp/config.yaml"
       - ".github/workflows/update-addon-changelogs.yaml"
       - ".github/scripts/generate-addon-changelogs.sh"
   workflow_dispatch:
@@ -48,7 +49,7 @@ jobs:
           base = os.environ.get('BASE_SHA', '')
           check_all = os.environ['EVENT_NAME'] == 'workflow_dispatch' or not base or set(base) == {'0'}
           failed = False
-          for addon in ('certflow', 'papra', 'tandoor-mcp'):
+          for addon in ('certflow', 'papra', 'tandoor-mcp', 'nextcloud-mcp'):
               config = Path(addon, 'config.yaml')
               match = re.search(r'^version:\s*"([^"\n]+)"\s*$', config.read_text(), re.MULTILINE)
               if not match:
@@ -100,6 +101,7 @@ jobs:
             certflow/CHANGELOG.md
             papra/CHANGELOG.md
             tandoor-mcp/CHANGELOG.md
+            nextcloud-mcp/CHANGELOG.md
           branch: automation/addon-changelog
           delete-branch: true
           sign-commits: true
