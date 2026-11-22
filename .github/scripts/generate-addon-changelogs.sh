@@ -43,7 +43,7 @@ for addon in certflow papra tandoor-mcp nextcloud-mcp; do
   {
     echo "## ${display_name} ${version}"
     echo
-    echo "### Änderungen"
+    echo "### Changes"
     git log --no-merges \
       --format="- %s ([%h](https://github.com/${GITHUB_REPOSITORY}/commit/%H))" \
       "${commit_range}" -- "${addon}" ":(exclude)${changelog_file}"

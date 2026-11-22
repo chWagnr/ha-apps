@@ -107,7 +107,7 @@ jobs:
           sign-commits: true
           commit-message: "docs: update add-on changelogs"
           title: "docs: update add-on changelogs"
-          body: "Automatisch aus Änderungen an den Add-on-Versionen generiert."
+          body: "Generated automatically from changes to app versions."
 
       - name: Merge changelog pull request
         if: steps.changelog-pr.outputs.pull-request-number != ''
