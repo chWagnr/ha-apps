@@ -1,22 +1,22 @@
-# Home Assistant Add-on: CertFlow
+# Home Assistant App: CertFlow
 
 CertFlow issues and renews Let's Encrypt certificates with the Strato DNS-01
 challenge and exports them into Home Assistant OS' `/ssl` directory.
 
-It does not run a reverse proxy. Use it when Caddy, another add-on, or Home
+It does not run a reverse proxy. Use it when Caddy, another app, or Home
 Assistant itself should consume certificate files from `/ssl`.
 
 ## Installation
 
-1. Add this repository to the Home Assistant add-on store:
+1. Add this repository to the Home Assistant app store:
    `https://github.com/chWagnr/hassio-addons`
 2. Install **CertFlow**.
 3. Configure your Let's Encrypt email, Strato credentials, optional
    `output_path`, and at least one certificate group.
-4. Start the add-on.
+4. Start the app.
 5. Point Caddy or another service at the exported certificate files.
 
-CertFlow is a one-shot add-on: it runs Certbot, exports the certificate files,
+CertFlow is a one-shot app: it runs Certbot, exports the certificate files,
 and then stops. Start it manually or with a Home Assistant automation on the
 schedule you want.
 

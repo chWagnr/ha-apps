@@ -4,14 +4,14 @@
 
 ## [0.5.0] - 2026-10-07
 
-- Populate the MCP token and discovered Tandoor selection in add-on options on first start.
-- Store MCP tokens only in add-on options; remove the unused pre-release token file.
+- Populate the MCP token and discovered Tandoor selection in app options on first start.
+- Store MCP tokens only in app options; remove the unused pre-release token file.
 
 ## [0.4.1] - 2026-10-07
 
 - Show login progress and success/error feedback directly below the sign-in form.
 - Log login outcomes without credentials and respect hidden token fields.
-- Add ISO 8601 UTC timestamps and severity to add-on log messages.
+- Add ISO 8601 UTC timestamps and severity to app log messages.
 
 ## [0.4.0] - 2026-10-07
 
@@ -27,9 +27,9 @@
 
 ## [0.2.0] - 2026-10-07
 
-- Discover installed Tandoor add-ons through Supervisor with the default role.
+- Discover installed Tandoor apps through Supervisor with the default role.
 - Use the internal hostname and container port; keep manual URL support.
-- Allow selecting a specific add-on and wait for Tandoor during startup.
+- Allow selecting a specific app and wait for Tandoor during startup.
 
 ## [0.1.0] - 2026-10-07
 

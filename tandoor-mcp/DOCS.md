@@ -1,24 +1,24 @@
 # Configuration
 
-1. Install Tandoor MCP from this repository in the Home Assistant app/add-on store.
+1. Install Tandoor MCP from this repository in the Home Assistant app store.
 2. Leave `tandoor_token` empty for one-time login. Leave `tandoor_url` at
-   `auto` to discover an installed Tandoor add-on, or enter a manual address.
+   `auto` to discover an installed Tandoor app, or enter a manual address.
    Alternatively enter an existing Tandoor API token in `tandoor_token`.
 3. Leave `mcp_token` empty to generate a separate MCP bearer token at first start.
    Alternatively provide your own random token.
-4. Save the options, start the add-on and enable its watchdog if desired.
-5. Open the add-on web UI and sign in with your Tandoor username and password
+4. Save the options, start the app and enable its watchdog if desired.
+5. Open the app web UI and sign in with your Tandoor username and password
    once (not needed when `tandoor_token` is set).
 6. Reload the Configuration tab: `mcp_token` is now populated. Reveal/copy it
    there, or use **Show MCP token** in the web UI.
 7. Connect your MCP client to `http://<HA-host>:3737/mcp` on a trusted network,
    or use your HTTPS reverse proxy endpoint. The host port can be changed in
-   the add-on's Network settings.
+   the app's Network settings.
 
 | Option | Purpose |
 | --- | --- |
-| `tandoor_url` | `auto` (default) discovers an installed Tandoor add-on. Alternatively a reachable HTTP(S) origin, for example `http://tandoor-host:8080`. No `/api` suffix, subpath or embedded credentials. Tandoor 2.x required. An empty value also means automatic discovery. |
-| `tandoor_addon` | Optional full installed add-on slug to select a specific Tandoor installation. Used only with automatic discovery. Filled after successful discovery. |
+| `tandoor_url` | `auto` (default) discovers an installed Tandoor app. Alternatively a reachable HTTP(S) origin, for example `http://tandoor-host:8080`. No `/api` suffix, subpath or embedded credentials. Tandoor 2.x required. An empty value also means automatic discovery. |
+| `tandoor_addon` | Optional full installed app slug to select a specific Tandoor installation. Used only with automatic discovery. Filled after successful discovery. |
 | `tandoor_token` | Optional existing Tandoor API token. When empty, use one-time login in the web UI. A configured token takes precedence over a saved login token. |
 | `mcp_token` | Optional bearer token, 32–256 letters, digits, `_` or `-`. Empty generates a random 256-bit token on first start; authentication is always required. |
 | `access_mode` | `read_only`, `import` (default), or `edit`. Restart after changes. |
@@ -26,11 +26,11 @@
 
 ## Automatic Tandoor connection
 
-At startup, the add-on reads Supervisor's store inventory, selects the installed
+At startup, the app reads Supervisor's store inventory, selects the installed
 Tandoor app, then reads its internal hostname and container ports. The selected
 slug is saved in `tandoor_addon`; future starts skip the store inventory.
 Clear that field to select again after replacing Tandoor. It connects
-directly over the add-on network, independent of published host ports, your
+directly over the app network, independent of published host ports, your
 external reverse proxy or ingress. Port 80 is preferred, then 8080, then HTTPS
 443; an otherwise unambiguous single TCP port is also supported. Unknown port
 layouts and host-network installations require a manual `tandoor_url`.
@@ -39,7 +39,7 @@ If multiple Tandoor apps are installed, choose one with `tandoor_addon` rather
 than guessing. This also supports a detached/local app not listed in the store.
 Discovery waits up to 60 seconds for the selected app to enter the started
 state; it never starts or modifies Tandoor itself. Restart MCP after installing
-or replacing a Tandoor add-on. The startup API probe is best effort; Tandoor
+or replacing a Tandoor app. The startup API probe is best effort; Tandoor
 may take longer to become ready, and subsequent tool requests can retry later.
 
 If Tandoor restricts `ALLOWED_HOSTS`, include its internal hostname in that
@@ -50,12 +50,12 @@ by hyphens. Keep the existing allowed hosts. A rejected hostname can cause HTTP
 that already works for your installation.
 
 Only the address is discovered: authenticate through the web UI or provide a
-Tandoor API token. The MCP token is separate. The add-on uses the Supervisor **default** role
-for GET `/store/info` and `/addons/<slug>/info`, with other add-on options
+Tandoor API token. The MCP token is separate. The app uses the Supervisor **default** role
+for GET `/store/info` and `/addons/<slug>/info`, with other app options
 redacted. It also reads `/addons/self/info` and writes `/addons/self/options`
 to populate its own configuration, then verifies persistence.
 It needs no manager/admin permissions and reads no Tandoor passwords,
-database files or other add-on secrets. See the
+database files or other app secrets. See the
 [Supervisor access checks](https://github.com/home-assistant/supervisor/blob/main/supervisor/api/middleware/security.py)
 and [app info API](https://developers.home-assistant.io/docs/api/supervisor/endpoints/).
 
@@ -68,20 +68,20 @@ CSRF protection, clears the password field after submission and returns no
 credentials. Username and password are sent to the configured Tandoor instance
 via POST `/api-token-auth/`; neither is written to options, files or logs.
 Use HTTPS for manual connections over untrusted networks; automatic discovery
-uses HTTP on the internal add-on network. Redirects are rejected.
+uses HTTP on the internal app network. Redirects are rejected.
 
 [Tandoor 2.6.15](https://github.com/TandoorRecipes/recipes/blob/2.6.15/cookbook/views/api.py#L2297)
 may return an existing valid read/write token or create one. This does not
 guarantee a dedicated MCP token or narrower permissions. The endpoint limits
-login attempts to 10 per day; the add-on never automatically retries login.
+login attempts to 10 per day; the app never automatically retries login.
 Once saved, the token is used immediately and after restarts without a password.
 The form displays login progress and a success or error message directly below
 the button. On success, the connection status confirms a saved Tandoor token.
 Login outcomes are logged without usernames, passwords or token values.
-Add-on log messages include ISO 8601 UTC timestamps (`Z`) and severity.
+App log messages include ISO 8601 UTC timestamps (`Z`) and severity.
 After reloading the web UI, a saved-token status confirms persistence; it does
 not independently prove that Tandoor still accepts that token.
-Before login, the add-on stays healthy but MCP requests return 503.
+Before login, the app stays healthy but MCP requests return 503.
 
 The saved token is bound to the resolved Tandoor origin. After changing that
 origin, sign in again. For an expired or revoked token, reopen the web UI and
@@ -143,7 +143,7 @@ verification; private CAs and disabling TLS verification are not supported.
 
 Supervisor API access with the default role is enabled for discovery. No Home
 Assistant Core API, Docker access, host networking or directory mounts are
-required. Manually configured MCP and Tandoor tokens live in add-on options.
+required. Manually configured MCP and Tandoor tokens live in app options.
 Generated MCP tokens are saved in the `mcp_token` option and survive restarts
 and updates. No separate MCP token file is used. The unused pre-release
 `/data/mcp-token.json` file is deleted at startup without importing its token.
@@ -153,12 +153,12 @@ Reveal the key in Configuration or with **Show MCP token** in the Ingress UI.
 It is never logged or returned via the public MCP endpoint.
 A login token lives in `/data/tandoor-token.json` with owner-only permissions
 (`0600`) and in process memory. These are not encrypted at rest; Home Assistant
-backups containing options or add-on data must be treated as sensitive. Recipe data stays
-in Tandoor and is not duplicated in this add-on. Requested recipe data reaches
+backups containing options or app data must be treated as sensitive. Recipe data stays
+in Tandoor and is not duplicated in this app. Requested recipe data reaches
 your MCP client's context. Payload/debug logging is disabled.
 
 Use Home Assistant backups for recovery. Rotate the API token in Tandoor and
-the bearer token by setting a new `mcp_token` in add-on options and updating
-client settings, then restart the add-on.
-Stopping the add-on allows up to ten seconds for requests to drain; do not
+the bearer token by setting a new `mcp_token` in app options and updating
+client settings, then restart the app.
+Stopping the app allows up to ten seconds for requests to drain; do not
 blindly retry interrupted write requests without checking the resulting recipe.

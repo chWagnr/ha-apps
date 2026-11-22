@@ -1,8 +1,8 @@
-# Papra – Home Assistant Add-on
+# Papra – Home Assistant App
 
 ## Overview
 
-Papra is a minimalistic, self-hosted document archiving platform. This add-on wraps the
+Papra is a minimalistic, self-hosted document archiving platform. This app wraps the
 official [Papra](https://github.com/papra-hq/papra) container image and integrates it
 cleanly into Home Assistant OS.
 
@@ -42,7 +42,7 @@ from a different origin than `app_base_url`.
 ### Option: `extra_env` (optional)
 
 A list of additional environment variables to pass to Papra, in `KEY=VALUE` format.
-Use this to configure advanced Papra options not yet exposed as first-class add-on options.
+Use this to configure advanced Papra options not yet exposed as first-class app options.
 
 **Example:**
 
@@ -57,31 +57,31 @@ extra_env:
 
 Papra uses two persistent locations:
 
-- `/config/db` for the SQLite database and internal add-on state
+- `/config/db` for the SQLite database and internal app state
 - `/share/papra/documents` for uploaded and managed documents
 
-Inside Home Assistant, `addon_config:rw` maps this add-on's dedicated host directory
+Inside Home Assistant, `addon_config:rw` maps this app's dedicated host directory
 (`/addon_configs/{REPO}_papra`) to `/config` inside the container, while `/share` maps
 to the shared folder that is also commonly available through Samba and SSH.
 
-If the add-on is installed from a local repository, `{REPO}` is typically `local`. For
+If the app is installed from a local repository, `{REPO}` is typically `local`. For
 GitHub repositories, Home Assistant uses a generated identifier for the repository.
 
 ## Backup
 
-Papra's add-on config storage is included in Home Assistant backups, but the documents
+Papra's app config storage is included in Home Assistant backups, but the documents
 live in the shared folder.
 
 For a complete backup, include both:
 
-- the Papra add-on data directory
+- the Papra app data directory
 - the Home Assistant `share` directory
 
-If you create a backup that includes the add-on but excludes `share`, the SQLite
+If you create a backup that includes the app but excludes `share`, the SQLite
 database will be backed up but your document files will not.
 
-This add-on is configured with `backup: cold`, which means Home Assistant will
-temporarily stop the add-on before taking a snapshot and restart it afterwards.
+This app is configured with `backup: cold`, which means Home Assistant will
+temporarily stop the app before taking a snapshot and restart it afterwards.
 This ensures the SQLite database is in a consistent state and the backup is safe
 to restore from.
 
@@ -93,7 +93,7 @@ to restore from.
 
 ## Home Assistant Ingress
 
-Home Assistant Ingress was evaluated for this add-on, but is currently not recommended.
+Home Assistant Ingress was evaluated for this app, but is currently not recommended.
 
 Papra starts behind the Home Assistant Ingress proxy, but the frontend renders as a white
 page when loaded from the Supervisor-managed subpath. This strongly indicates that Papra

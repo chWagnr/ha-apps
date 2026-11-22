@@ -14,7 +14,7 @@ CI checks that the current version has exactly one non-empty entry.
 ## [26.7.0] - 2026-10-07
 
 ### Changes
-- Updated the Papra Docker image and add-on version from 26.6.2 to 26.7.0 ([7cc4fcc](https://github.com/chWagnr/hassio-addons/commit/7cc4fcc305dba636a39aa4389bc7743603ac311e)).
+- Updated the Papra Docker image and app version from 26.6.2 to 26.7.0 ([7cc4fcc](https://github.com/chWagnr/hassio-addons/commit/7cc4fcc305dba636a39aa4389bc7743603ac311e)).
 
 ## [26.6.2] - 2026-09-07
 

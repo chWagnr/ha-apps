@@ -1,4 +1,4 @@
-# Home Assistant Add-on: CertFlow
+# Home Assistant App: CertFlow
 
 ## Configuration
 
@@ -108,7 +108,7 @@ home.example.de {
 
 ## Renewal State
 
-Certbot state is stored in the add-on config directory:
+Certbot state is stored in the app config directory:
 
 - `/config/letsencrypt`
 - `/config/work`
@@ -117,7 +117,7 @@ Certbot state is stored in the add-on config directory:
 This keeps the Let's Encrypt account and renewal configuration stable across
 restarts.
 
-CertFlow is a one-shot add-on. It runs Certbot once, exports the current
+CertFlow is a one-shot app. It runs Certbot once, exports the current
 certificate files, and then stops. Use a Home Assistant automation to start it
 regularly, for example once per day:
 
@@ -133,9 +133,9 @@ action:
 mode: single
 ```
 
-If Home Assistant shows a different add-on ID, use that ID instead of
+If Home Assistant shows a different app ID, use that ID instead of
 `local_certflow`.
 
 ## Failure notifications
 
-If Certbot cannot request or renew a certificate, CertFlow creates a persistent notification in Home Assistant. The notification contains the certificate name and the relevant `ERROR:` lines from Certbot. The complete output remains available in the add-on log.
+If Certbot cannot request or renew a certificate, CertFlow creates a persistent notification in Home Assistant. The notification contains the certificate name and the relevant `ERROR:` lines from Certbot. The complete output remains available in the app log.
