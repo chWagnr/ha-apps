@@ -1,6 +1,6 @@
 FROM node:24.22.3-alpine
 
-ARG BUILD_VERSION=0.5.0
+ARG BUILD_VERSION=0.5.1
 ARG BUILD_ARCH=amd64
 LABEL io.hass.version="${BUILD_VERSION}" \
       io.hass.type="addon" \
