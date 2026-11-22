@@ -1,5 +1,7 @@
 # Changelog
 
+## [Unreleased]
+
 ## [0.1.0] - 2026-11-16
 
 - Package nc-mcp-server 0.9.0 directly with its existing Nextcloud and Cospend tools.

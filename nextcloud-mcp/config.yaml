@@ -1,5 +1,5 @@
 name: Nextcloud MCP
-version: "0.1.0"
+version: "0.1.1"
 slug: nextcloud_mcp
 description: Authenticated nc_mcp_server for Nextcloud apps, including Cospend.
 url: https://github.com/chWagnr/hassio-addons/tree/main/nextcloud-mcp
