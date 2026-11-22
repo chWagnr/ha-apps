@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-11-22
+
+### Changes
+- feat: Update repository URLs to point to "ha-apps" and improve documentation clarity ([73e656f](https://github.com/chWagnr/ha-apps/commit/73e656fdbcd9b0d6dc4718dc8a3a6fb4c5a245a0))
+- feat: Update documentation to use "Home Assistant app" terminology and improve clarity ([2ce6f34](https://github.com/chWagnr/ha-apps/commit/2ce6f34f118929bc2f7abb45d11dbc2cea882f2b))
+- feat: Bump version to 0.5.1 in Dockerfile, config.yaml, package.json, and package-lock.json ([d30611b](https://github.com/chWagnr/ha-apps/commit/d30611b3e1bbac5a5a4c45bda94c1ae1b40d7a7c))
+- feat: Implement timestamping for upstream error logs ([b464b3d](https://github.com/chWagnr/ha-apps/commit/b464b3db4f1dc4803f6dc7e62f9f32dc019013c2))
+- fix(deps): update dependency @modelcontextprotocol/sdk to v1.32.2 ([f97f6fd](https://github.com/chWagnr/ha-apps/commit/f97f6fd844c9aa2d4eb071d1c630f2daa6cdfc0a))
+- chore(deps): update dependency node to v24.22.3 ([81a1cdf](https://github.com/chWagnr/ha-apps/commit/81a1cdf375266f15536b758b2e4d1d84b67d58cc))
+- fix(deps): update dependency @modelcontextprotocol/sdk to v1.32.1 ([3f4915d](https://github.com/chWagnr/ha-apps/commit/3f4915d9a9a677cef814629328127288f361c48f))
+- chore(deps): update dependency node to v24.22.0 ([33e7d69](https://github.com/chWagnr/ha-apps/commit/33e7d6912c13a060b7b24df2c4b23734f5936ec4))
+
 ## [0.5.0] - 2026-10-07
 
 - Populate the MCP token and discovered Tandoor selection in app options on first start.

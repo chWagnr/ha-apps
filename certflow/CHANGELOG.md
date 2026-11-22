@@ -6,6 +6,14 @@ CI checks that the current version has exactly one non-empty entry.
 
 ## [Unreleased]
 
+## [0.1.10] - 2026-11-22
+
+### Changes
+- feat: Update repository URLs to point to "ha-apps" and improve documentation clarity ([73e656f](https://github.com/chWagnr/ha-apps/commit/73e656fdbcd9b0d6dc4718dc8a3a6fb4c5a245a0))
+- feat: Update documentation to use "Home Assistant app" terminology and improve clarity ([2ce6f34](https://github.com/chWagnr/ha-apps/commit/2ce6f34f118929bc2f7abb45d11dbc2cea882f2b))
+- feat: Bump version to 0.1.10 in CertFlow configuration ([6783263](https://github.com/chWagnr/ha-apps/commit/6783263a0207d99b3df6e5ef9520eb34bd0b7eb2))
+- feat: Add timestamping to Certbot output for better logging ([b9a4233](https://github.com/chWagnr/ha-apps/commit/b9a4233d75a7c7d73f3e36e177d88820e12e5eea))
+
 ## [0.1.9] - 2026-11-16
 
 ### Changes
