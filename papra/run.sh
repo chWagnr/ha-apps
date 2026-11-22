@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+LOG_TIMESTAMP='%Y-%m-%dT%H:%M:%S.%3N%:z'
 # shellcheck source=/dev/null
 source /usr/lib/bashio/lib/bashio.sh
 
@@ -94,4 +95,4 @@ bashio::log.info "Launching Papra..."
 
 # Hand off to the upstream startup command (runs migrations then starts server)
 cd /app
-exec npm run start:with-migrations
+exec npm run start:with-migrations > >(node /papra-log.mjs) 2>&1

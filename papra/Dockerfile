@@ -18,8 +18,8 @@ RUN apt-get update \
   && ln -s /usr/lib/bashio/bashio /usr/bin/bashio \
   && rm /tmp/bashio.tar.gz
 
-# Copy run script
-COPY run.sh /
+# Copy run script and log formatter
+COPY run.sh papra-log.mjs /
 RUN chmod a+x /run.sh
 
 CMD ["/run.sh"]
