@@ -34,7 +34,7 @@
           "name": "Papra add-on version",
           "filePatterns": ["papra/config.yaml"],
           "matchStrings": [
-            "version:\\s+\"?(?<version>[0-9]+\\.[0-9]+\\.[0-9]+)\"?"
+            "version:\\s+\"?(?<version>[0-9]+\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)?)\"?"
           ],
           "bumpType": "sync"
         }
