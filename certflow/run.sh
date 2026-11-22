@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+LOG_TIMESTAMP='%Y-%m-%dT%H:%M:%S.%3N%:z'
 # shellcheck source=/dev/null
 source /usr/lib/bashio/lib/bashio.sh
 
@@ -179,6 +180,13 @@ notify_certbot_failure() {
     fi
 }
 
+timestamp_certbot_output() {
+    local line
+    while IFS= read -r line || [[ -n "${line}" ]]; do
+        printf '[%s] %s\n' "$(date -u +'%Y-%m-%dT%H:%M:%S.%3NZ')" "${line}"
+    done
+}
+
 run_certbot_for_certificate() {
     local name="$1"
     local domains_json="$2"
@@ -224,7 +232,7 @@ run_certbot_for_certificate() {
         --keep-until-expiring \
         "${staging_args[@]}" \
         "${domain_args[@]}" \
-        2>&1 | tee "${certbot_output}"; then
+        2>&1 | tee "${certbot_output}" | timestamp_certbot_output; then
         rm -f "${certbot_output}"
     else
         error_details="$(grep -E '^ERROR:' "${certbot_output}" | tail -n 5 || true)"
