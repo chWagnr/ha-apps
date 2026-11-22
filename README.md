@@ -1,5 +1,7 @@
 # Home Assistant Apps
 
+For new installations, add `https://github.com/chWagnr/ha-apps` to the Home Assistant app store. If you already added `https://github.com/chWagnr/hassio-addons`, keep that URL in Home Assistant. GitHub redirects it to this repository, and keeping the original URL preserves your installed app IDs.
+
 - [CertFlow](certflow/README.md)
 - [Papra](papra/README.md)
 - [Tandoor MCP](tandoor-mcp/README.md) — authenticated recipe access and import for MCP clients.

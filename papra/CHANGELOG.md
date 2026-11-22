@@ -9,17 +9,17 @@ CI checks that the current version has exactly one non-empty entry.
 ## [26.7.1] - 2026-11-16
 
 ### Changes
-- chore(deps): update ghcr.io/papra-hq/papra docker tag to v26.7.1 ([7555e06](https://github.com/chWagnr/hassio-addons/commit/7555e062fe9cbec9a65570071c88920abfe1ea26))
+- chore(deps): update ghcr.io/papra-hq/papra docker tag to v26.7.1 ([7555e06](https://github.com/chWagnr/ha-apps/commit/7555e062fe9cbec9a65570071c88920abfe1ea26))
 
 ## [26.7.0] - 2026-10-07
 
 ### Changes
-- Updated the Papra Docker image and app version from 26.6.2 to 26.7.0 ([7cc4fcc](https://github.com/chWagnr/hassio-addons/commit/7cc4fcc305dba636a39aa4389bc7743603ac311e)).
+- Updated the Papra Docker image and app version from 26.6.2 to 26.7.0 ([7cc4fcc](https://github.com/chWagnr/ha-apps/commit/7cc4fcc305dba636a39aa4389bc7743603ac311e)).
 
 ## [26.6.2] - 2026-09-07
 
 ### Changes
-- chore(deps): update ghcr.io/papra-hq/papra docker tag to v26.6.2 ([d5125cf](https://github.com/chWagnr/hassio-addons/commit/d5125cf8b26bad86d9a95a872ceb7a5a7aeca100))
+- chore(deps): update ghcr.io/papra-hq/papra docker tag to v26.6.2 ([d5125cf](https://github.com/chWagnr/ha-apps/commit/d5125cf8b26bad86d9a95a872ceb7a5a7aeca100))
 
 ## [26.6.1] - 2026-07-19
 

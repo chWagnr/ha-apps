@@ -7,7 +7,7 @@ LABEL io.hass.version="${BUILD_VERSION}" \
       io.hass.arch="${BUILD_ARCH}" \
       org.opencontainers.image.title="Nextcloud MCP" \
       org.opencontainers.image.description="Home Assistant packaging for nc_mcp_server" \
-      org.opencontainers.image.source="https://github.com/chWagnr/hassio-addons" \
+      org.opencontainers.image.source="https://github.com/chWagnr/ha-apps" \
       org.opencontainers.image.licenses="MIT"
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
 WORKDIR /app

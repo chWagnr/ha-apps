@@ -4,7 +4,7 @@ FROM ${PAPRA_IMAGE}
 
 LABEL org.opencontainers.image.title="Papra" \
   org.opencontainers.image.description="Minimal document management platform" \
-  org.opencontainers.image.source="https://github.com/chWagnr/hassio-addons" \
+  org.opencontainers.image.source="https://github.com/chWagnr/ha-apps" \
   org.opencontainers.image.licenses="MIT"
 
 # Install bashio

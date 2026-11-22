@@ -105,4 +105,4 @@ For now, the recommended access mode remains direct access on port `1221`.
 ## Support
 
 Please open an issue in the
-[hassio-addons repository](https://github.com/chWagnr/hassio-addons/issues).
+[ha-apps repository](https://github.com/chWagnr/ha-apps/issues).

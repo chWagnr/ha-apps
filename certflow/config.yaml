@@ -2,7 +2,7 @@ name: CertFlow
 version: "0.1.10"
 slug: certflow
 description: ACME DNS-01 certificate exporter for Home Assistant OS.
-url: https://github.com/chWagnr/hassio-addons/tree/main/certflow
+url: https://github.com/chWagnr/ha-apps/tree/main/certflow
 image: ghcr.io/chwagnr/{arch}-addon-certflow
 panel_icon: mdi:certificate-outline
 startup: once

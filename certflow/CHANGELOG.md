@@ -9,28 +9,28 @@ CI checks that the current version has exactly one non-empty entry.
 ## [0.1.9] - 2026-11-16
 
 ### Changes
-- chore(deps): update dependency certbot to v5.10.0 ([bbff822](https://github.com/chWagnr/hassio-addons/commit/bbff82208477b1f4378315ee6a3ae9543e2a8383))
+- chore(deps): update dependency certbot to v5.10.0 ([bbff822](https://github.com/chWagnr/ha-apps/commit/bbff82208477b1f4378315ee6a3ae9543e2a8383))
 
 ## [0.1.8] - 2026-09-07
 
 ### Changes
-- chore(deps): update dependency certbot to v5.8.0 ([a7e7e7d](https://github.com/chWagnr/hassio-addons/commit/a7e7e7dc54ce17888fb1d411dbaa398be0a3337d))
+- chore(deps): update dependency certbot to v5.8.0 ([a7e7e7d](https://github.com/chWagnr/ha-apps/commit/a7e7e7dc54ce17888fb1d411dbaa398be0a3337d))
 
 ## [0.1.7] - 2026-08-02
 
 ### Changes
-- feat: add support for Strato 2FA with device name and TOTP secret ([ea0d0f8](https://github.com/chWagnr/hassio-addons/commit/ea0d0f86d7e32786b4b83314f8477f335d3b3fdb))
+- feat: add support for Strato 2FA with device name and TOTP secret ([ea0d0f8](https://github.com/chWagnr/ha-apps/commit/ea0d0f86d7e32786b4b83314f8477f335d3b3fdb))
 
 ## [0.1.6] - 2026-08-02
 
 ### Changes
-- feat: update version to 0.1.6 for CertFlow add-on ([6e7388d](https://github.com/chWagnr/hassio-addons/commit/6e7388da5f014200331fad4e0a729bd64cba8ec1))
-- fix: prevent infinite restart loop on Certbot failure by keeping the process alive ([efc77a2](https://github.com/chWagnr/hassio-addons/commit/efc77a2fa712de541ca2cda7706ad30e92d19a17))
+- feat: update version to 0.1.6 for CertFlow add-on ([6e7388d](https://github.com/chWagnr/ha-apps/commit/6e7388da5f014200331fad4e0a729bd64cba8ec1))
+- fix: prevent infinite restart loop on Certbot failure by keeping the process alive ([efc77a2](https://github.com/chWagnr/ha-apps/commit/efc77a2fa712de541ca2cda7706ad30e92d19a17))
 
 ## [0.1.5] - 2026-08-02
 
 ### Changes
-- Added a persistent Home Assistant notification for failed Certbot runs ([e9334f8](https://github.com/chWagnr/hassio-addons/commit/e9334f897d0c14aedd8da5c0ec290cd11705626f)).
+- Added a persistent Home Assistant notification for failed Certbot runs ([e9334f8](https://github.com/chWagnr/ha-apps/commit/e9334f897d0c14aedd8da5c0ec290cd11705626f)).
 
 ## [0.1.4] - 2026-07-19
 

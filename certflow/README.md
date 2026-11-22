@@ -9,7 +9,7 @@ Assistant itself should consume certificate files from `/ssl`.
 ## Installation
 
 1. Add this repository to the Home Assistant app store:
-   `https://github.com/chWagnr/hassio-addons`
+   `https://github.com/chWagnr/ha-apps`
 2. Install **CertFlow**.
 3. Configure your Let's Encrypt email, Strato credentials, optional
    `output_path`, and at least one certificate group.

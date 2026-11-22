@@ -7,7 +7,7 @@ LABEL io.hass.version="${BUILD_VERSION}" \
       io.hass.arch="${BUILD_ARCH}" \
       org.opencontainers.image.title="Tandoor MCP" \
       org.opencontainers.image.description="Authenticated Tandoor recipe MCP server" \
-      org.opencontainers.image.source="https://github.com/chWagnr/hassio-addons" \
+      org.opencontainers.image.source="https://github.com/chWagnr/ha-apps" \
       org.opencontainers.image.licenses="MIT"
 
 WORKDIR /app

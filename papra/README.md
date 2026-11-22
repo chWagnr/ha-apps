@@ -15,7 +15,7 @@ wires it into the Home Assistant ecosystem, giving you:
 ## Installation
 
 1. Add this repository to your Home Assistant app store:
-   `https://github.com/chWagnr/hassio-addons`
+   `https://github.com/chWagnr/ha-apps`
 2. Find **Papra** in the app store and click **Install**.
 3. Configure at minimum `app_base_url` and `auth_secret` in the app configuration.
 4. Start the app.
@@ -61,5 +61,5 @@ not include your Papra documents.
 
 ## Source
 
-- App source: <https://github.com/chWagnr/hassio-addons/tree/main/papra>
+- App source: <https://github.com/chWagnr/ha-apps/tree/main/papra>
 - Upstream Papra: <https://github.com/papra-hq/papra>

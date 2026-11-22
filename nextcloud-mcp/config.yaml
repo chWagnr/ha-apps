@@ -2,7 +2,7 @@ name: Nextcloud MCP
 version: "0.1.1"
 slug: nextcloud_mcp
 description: Authenticated nc_mcp_server for Nextcloud apps, including Cospend.
-url: https://github.com/chWagnr/hassio-addons/tree/main/nextcloud-mcp
+url: https://github.com/chWagnr/ha-apps/tree/main/nextcloud-mcp
 image: ghcr.io/chwagnr/{arch}-addon-nextcloud-mcp
 arch:
   - amd64

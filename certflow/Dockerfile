@@ -2,7 +2,7 @@ FROM python:3.14-slim-bookworm
 
 LABEL org.opencontainers.image.title="CertFlow" \
   org.opencontainers.image.description="ACME DNS-01 certificate exporter for Home Assistant OS" \
-  org.opencontainers.image.source="https://github.com/chWagnr/hassio-addons" \
+  org.opencontainers.image.source="https://github.com/chWagnr/ha-apps" \
   org.opencontainers.image.licenses="MIT"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
