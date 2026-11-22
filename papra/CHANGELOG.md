@@ -6,6 +6,14 @@ CI checks that the current version has exactly one non-empty entry.
 
 ## [Unreleased]
 
+## [26.7.1.1] - 2026-11-22
+
+### Changes
+- feat: Update repository URLs to point to "ha-apps" and improve documentation clarity ([73e656f](https://github.com/chWagnr/ha-apps/commit/73e656fdbcd9b0d6dc4718dc8a3a6fb4c5a245a0))
+- feat: Update documentation to use "Home Assistant app" terminology and improve clarity ([2ce6f34](https://github.com/chWagnr/ha-apps/commit/2ce6f34f118929bc2f7abb45d11dbc2cea882f2b))
+- feat: Update version to 26.7.1.1 in config.yaml ([4d32163](https://github.com/chWagnr/ha-apps/commit/4d32163dfc5834a40df21230f21c712f7d7ba7f1))
+- feat: Add logging formatter for Papra output ([106b55c](https://github.com/chWagnr/ha-apps/commit/106b55c6417bc962eab507aad69d978d6471642b))
+
 ## [26.7.1] - 2026-11-16
 
 ### Changes
