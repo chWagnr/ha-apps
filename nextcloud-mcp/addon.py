@@ -9,6 +9,7 @@ import secrets
 import signal
 from contextlib import asynccontextmanager
 from pathlib import Path
+from time import gmtime, monotonic
 from urllib.parse import urlsplit
 
 import httpx
@@ -23,6 +24,7 @@ from starlette.responses import HTMLResponse, JSONResponse, Response
 from starlette.routing import Route
 
 INGRESS_ADDRESSES = {"172.30.32.2", "::ffff:172.30.32.2"}
+LOGGER = logging.getLogger("nextcloud_mcp.addon")
 
 
 def validate_options(raw):
@@ -101,6 +103,12 @@ async def probe_connection(options):
             data = response.json()["ocs"]
             if data["meta"]["status"] != "ok" or not data["data"].get("id"):
                 raise ValueError()
+    except httpx.HTTPStatusError as exc:
+        LOGGER.warning("Nextcloud connection test returned HTTP %d.", exc.response.status_code)
+        raise ValueError("Connection test failed. Check URL, user and app password.") from None
+    except httpx.TimeoutException:
+        LOGGER.warning("Nextcloud connection test timed out.")
+        raise ValueError("Connection test failed. Check URL, user and app password.") from None
     except Exception:
         raise ValueError("Connection test failed. Check URL, user and app password.") from None
 
@@ -120,28 +128,43 @@ class Gateway:
         if scope["type"] != "http":
             return await self.upstream(scope, receive, send)
         request = Request(scope, receive)
+        method = request.method if request.method in {"GET", "POST", "DELETE"} else "OTHER"
         if request.url.path == "/healthz" and request.method == "GET":
             response = JSONResponse({"status": "ok", "configured": self.upstream is not None})
         elif not hmac.compare_digest(request.headers.get("authorization", "").encode(),
                                      ("Bearer " + self.options["mcp_token"]).encode()):
+            if request.url.path == "/mcp":
+                LOGGER.warning("MCP %s rejected (401): missing or invalid Bearer token.", method)
             response = JSONResponse({"error": "Unauthorized"}, status_code=401,
                                     headers={"WWW-Authenticate": 'Bearer realm="nextcloud-mcp"'})
         elif request.headers.get("origin") and request.headers["origin"] not in self.options["allowed_origins"]:
+            if request.url.path == "/mcp":
+                LOGGER.warning("MCP %s rejected (403): origin is not allowed.", method)
             response = JSONResponse({"error": "Origin not allowed"}, status_code=403)
         elif request.url.path != "/mcp":
             response = JSONResponse({"error": "Not found"}, status_code=404)
         elif self.upstream is None:
+            LOGGER.warning("MCP %s unavailable (503): configure Nextcloud and restart the app.", method)
             response = JSONResponse({"error": "Configure Nextcloud in the add-on web UI and restart."}, status_code=503)
         else:
+            started = monotonic()
             # Preserve upstream HTTP methods, SSE streaming and protocol headers.
             # Never forward the separate MCP credential into the upstream application.
             scope = {**scope, "headers": [(k, v) for k, v in scope["headers"] if k.lower() != b"authorization"]}
             async def secure_send(message):
                 if message["type"] == "http.response.start":
+                    status = message["status"]
+                    LOGGER.log(logging.WARNING if status >= 400 else logging.INFO,
+                               "MCP %s sent HTTP %d headers after %.0f ms.", method, status,
+                               (monotonic() - started) * 1000)
                     message = {**message, "headers": [*message["headers"], (b"cache-control", b"no-store"),
                                                       (b"x-content-type-options", b"nosniff")]}
                 await send(message)
-            return await self.upstream(scope, receive, secure_send)
+            try:
+                return await self.upstream(scope, receive, secure_send)
+            except Exception:
+                LOGGER.error("MCP %s failed while processing the request.", method)
+                raise
         response.headers["Cache-Control"] = "no-store"
         response.headers["X-Content-Type-Options"] = "nosniff"
         await response(scope, receive, send)
@@ -180,6 +203,7 @@ def create_setup(options, *, persist=persist_options, probe=probe_connection, in
         if busy.locked():
             return JSONResponse({"message": "Connection test already running."}, status_code=429)
         async with busy:
+            stage = "validating settings"
             try:
                 body = bytearray()
                 async for chunk in request.stream():
@@ -192,11 +216,17 @@ def create_setup(options, *, persist=persist_options, probe=probe_connection, in
                 candidate = validate_options({**options, **data})
                 if not all(candidate[key] for key in data):
                     raise ValueError()
+                stage = "testing Nextcloud connection"
+                LOGGER.info("Testing Nextcloud connection from the setup page.")
                 await probe(candidate)
+                LOGGER.info("Nextcloud connection test passed.")
+                stage = "saving app options"
                 await persist({key: candidate[key] for key in data}, replace=True)
                 restart_required = True
+                LOGGER.info("Nextcloud settings saved. Restart the app to activate them.")
                 return JSONResponse({"message": "Connection successful. Saved in add-on options. Restart the app to activate. No data was changed."})
             except Exception:
+                LOGGER.warning("Nextcloud setup failed while %s.", stage)
                 return JSONResponse({"message": "Cannot test or save connection. Check URL, user, app password and Supervisor access."}, status_code=400)
 
     app = Starlette(routes=[Route(path, endpoint, methods=["GET", "POST"]) for path in
@@ -216,6 +246,7 @@ async def build_apps(raw, *, persist=persist_options):
     if not options["mcp_token"]:
         options["mcp_token"] = secrets.token_hex(32)
         await persist({"mcp_token": options["mcp_token"]})
+        LOGGER.info("Generated and saved an MCP Bearer token.")
     configured = all(options[key] for key in ("nextcloud_url", "nextcloud_user", "nextcloud_password"))
     upstream = create_server(upstream_config(options)).streamable_http_app() if configured else None
     return Gateway(upstream, options), create_setup(options, persist=persist)
@@ -223,9 +254,6 @@ async def build_apps(raw, *, persist=persist_options):
 
 async def main(options_path="/data/options.json"):
     gateway, setup = await build_apps(json.loads(Path(options_path).read_text()))
-    # Upstream tracebacks can include credentials or API response bodies. Keep logs
-    # to fixed lifecycle messages; MCP still returns upstream tool results/errors.
-    logging.disable(logging.CRITICAL)
     servers = [uvicorn.Server(uvicorn.Config(app, host="0.0.0.0", port=port, proxy_headers=False,
                                             access_log=False, log_config=None))
                for app, port in ((gateway, 3738), (setup, 8099))]
@@ -240,7 +268,10 @@ async def main(options_path="/data/options.json"):
                 server.should_exit = True
         for signum in (signal.SIGTERM, signal.SIGINT):
             loop.add_signal_handler(signum, stop)
-        print("Nextcloud MCP listening on port 3738; setup on 8099.", flush=True)
+        LOGGER.info("Starting MCP on port 3738 and setup on port 8099 (Nextcloud configured: %s, permissions: %s).",
+                    "yes" if gateway.upstream else "no", gateway.options["permissions"])
+        if gateway.upstream is None:
+            LOGGER.warning("Nextcloud settings are incomplete. Use the Home Assistant setup page.")
         try:
             await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
         finally:
@@ -248,6 +279,7 @@ async def main(options_path="/data/options.json"):
             await asyncio.gather(*tasks)
             if gateway.upstream:
                 await get_client().close()
+            LOGGER.info("Nextcloud MCP stopped.")
 
 
 @asynccontextmanager
@@ -256,8 +288,19 @@ async def empty_lifespan():
 
 
 if __name__ == "__main__":
+    # Library logs can contain credentials and API data. Emit only the app's
+    # own messages, including when an upstream exception reaches Uvicorn.
+    logging.basicConfig(handlers=[logging.NullHandler()], force=True)
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter("%(asctime)s.%(msecs)03dZ %(levelname)s %(message)s",
+                                  datefmt="%Y-%m-%dT%H:%M:%S")
+    formatter.converter = gmtime
+    handler.setFormatter(formatter)
+    LOGGER.addHandler(handler)
+    LOGGER.setLevel(logging.INFO)
+    LOGGER.propagate = False
     try:
         asyncio.run(main())
-    except Exception:
-        print("Nextcloud MCP startup failed. Check add-on options and Supervisor access.", flush=True)
+    except (Exception, SystemExit):
+        LOGGER.error("Nextcloud MCP failed to run. Check app options, Supervisor access and port availability.")
         raise SystemExit(1) from None

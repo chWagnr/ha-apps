@@ -33,7 +33,9 @@ class AddonTests(unittest.IsolatedAsyncioTestCase):
     async def rpc(self, method, params=None):
         return await self.client.post("/mcp", headers=HEADERS, json={"jsonrpc": "2.0", "id": 1, "method": method, "params": params or {}})
     async def test_real_upstream_initialize_and_tools(self):
-        response = await self.rpc("initialize", {"protocolVersion": "2025-03-26", "capabilities": {}, "clientInfo": {"name": "test", "version": "1"}})
+        with self.assertLogs("nextcloud_mcp.addon") as logs:
+            response = await self.rpc("initialize", {"protocolVersion": "2025-03-26", "capabilities": {}, "clientInfo": {"name": "test", "version": "1"}})
+        self.assertIn("MCP POST sent HTTP 200 headers", logs.output[0])
         self.assertEqual(response.status_code, 200)
         self.assertEqual(rpc_data(response)["result"]["serverInfo"]["name"], "nc-mcp-server")
         names = {tool["name"] for tool in rpc_data(await self.rpc("tools/list"))["result"]["tools"]}
@@ -42,9 +44,15 @@ class AddonTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("upload_file_from_path", names)
         self.assertGreater(len(names), 100)
     async def test_auth_origin_and_health(self):
-        self.assertEqual((await self.client.get("/healthz")).status_code, 200)
-        self.assertEqual((await self.client.post("/mcp", json={})).status_code, 401)
-        self.assertEqual((await self.client.post("/mcp", headers={**HEADERS, "Origin": "https://evil.example"}, json={})).status_code, 403)
+        with self.assertNoLogs("nextcloud_mcp.addon"):
+            self.assertEqual((await self.client.get("/healthz")).status_code, 200)
+        with self.assertLogs("nextcloud_mcp.addon") as logs:
+            self.assertEqual((await self.client.post("/mcp", headers={"Authorization": "Bearer invalid-secret"}, json={})).status_code, 401)
+            self.assertEqual((await self.client.post("/mcp", headers={**HEADERS, "Origin": "https://evil.example"}, json={})).status_code, 403)
+        self.assertIn("missing or invalid Bearer token", logs.output[0])
+        self.assertIn("origin is not allowed", logs.output[1])
+        for private_value in ("invalid-secret", "https://evil.example", OPTIONS["mcp_token"]):
+            self.assertNotIn(private_value, "\n".join(logs.output))
         self.assertEqual((await self.client.get("/other", headers=HEADERS)).status_code, 404)
     async def test_read_permission_blocks_actual_upstream_write(self):
         with patch.object(get_client(), "ocs_post_json", new_callable=AsyncMock) as write:
@@ -97,9 +105,14 @@ class ConfigTests(unittest.IsolatedAsyncioTestCase):
                 headers = {"X-Setup-CSRF": csrf}
                 self.assertEqual((await client.post("/mcp-token", headers=headers)).json()["token"], OPTIONS["mcp_token"])
                 data = {key: OPTIONS[key] for key in ("nextcloud_url", "nextcloud_user", "nextcloud_password")}
-                response = await client.post("/connection", headers=headers, json=data)
+                with self.assertLogs("nextcloud_mcp.addon") as logs:
+                    response = await client.post("/connection", headers=headers, json=data)
                 self.assertEqual(response.status_code, 200 if success else 400)
                 self.assertNotIn(OPTIONS["nextcloud_password"], response.text)
+                log = "\n".join(logs.output)
+                self.assertIn("settings saved" if success else "failed while testing Nextcloud connection", log)
+                self.assertNotIn(OPTIONS["nextcloud_password"], log)
+                self.assertNotIn(OPTIONS["nextcloud_url"], log)
                 if success:
                     persist.assert_awaited_once_with(data, replace=True)
                     self.assertTrue((await client.get("/status")).json()["restart_required"])
