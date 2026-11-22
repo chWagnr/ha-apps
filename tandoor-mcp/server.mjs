@@ -1,4 +1,4 @@
-import { logInfo, logError } from './log.mjs';
+import { logInfo, logError, timestampUpstreamLogs } from './log.mjs';
 import { persistOptions } from './options.mjs';
 import { readFile, unlink } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -185,6 +185,7 @@ export async function createAddonServer(rawOptions, { tokenPath = '/data/tandoor
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {
+  timestampUpstreamLogs();
   try {
     const options = JSON.parse(await readFile('/data/options.json', 'utf8'));
     // Remove the unused pre-release token file; options are the only MCP token store.
